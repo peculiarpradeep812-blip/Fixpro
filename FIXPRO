@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRATHIP SARAVANA FIX PRO | Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #020617;
+            --accent: #0ea5e9;
+            --card-bg: #0f172a;
+            --text-dim: #94a3b8;
+            --success: #22c55e;
+            --warning: #f59e0b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        body { background-color: var(--primary); color: #f8fafc; line-height: 1.6; }
+
+        header { padding: 80px 20px 100px; text-align: center; background: radial-gradient(circle at center, #1e3a8a 0%, var(--primary) 70%); }
+        header h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1px; text-transform: uppercase; }
+        header span { color: var(--accent); }
+
+        .container { max-width: 1100px; margin: -60px auto 60px; padding: 0 20px; }
+
+        /* --- DASHBOARD STYLE --- */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-card h4 { font-size: 0.8rem; text-transform: uppercase; color: var(--text-dim); margin-bottom: 5px; }
+        .stat-card .number { font-size: 1.8rem; font-weight: 800; color: var(--accent); }
+
+        /* --- SERVICES STYLE --- */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+        .service-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: 0.3s ease;
+            cursor: pointer;
+            min-height: 250px;
+        }
+        .service-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+        .icon-wrapper { width: 60px; height: 60px; background: rgba(14, 165, 233, 0.1); color: var(--accent); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 15px; }
+
+        /* --- FORM STYLE --- */
+        .booking-box { background: #ffffff; color: #020617; padding: 40px; border-radius: 32px; margin-top: 40px; }
+        input, select, textarea { width: 100%; padding: 15px; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 16px; margin-bottom: 15px; background: #f8fafc; }
+        .btn-whatsapp { width: 100%; padding: 18px; border: none; border-radius: 12px; background: #25D366; color: white; font-size: 1.1rem; font-weight: 700; cursor: pointer; }
+
+        footer { text-align: center; padding: 40px; color: var(--text-dim); font-size: 0.8rem; }
+
+        .call-btn { position: fixed; bottom: 30px; right: 30px; background: var(--accent); color: white; padding: 15px 30px; border-radius: 50px; font-weight: 800; text-decoration: none; z-index: 1000; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>PRATHIP SARAVANA <span>FIX PRO</span></h1>
+        <p>Service Management Dashboard & Booking Portal</p>
+    </header>
+
+    <div class="container">
+        <h3 style="margin-bottom: 15px; color: var(--accent);">Live Activity Monitor</h3>
+        <div class="dashboard">
+            <div class="stat-card">
+                <h4>Total Requests</h4>
+                <div class="number" id="totalCount">0</div>
+            </div>
+            <div class="stat-card">
+                <h4>Status: Open</h4>
+                <div class="number" style="color: var(--warning);" id="openCount">0</div>
+            </div>
+            <div class="stat-card">
+                <h4>Completed</h4>
+                <div class="number" style="color: var(--success);" id="closedCount">0</div>
+            </div>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card" onclick="setService('AC Repair')">
+                <div class="icon-wrapper">❄️</div>
+                <h3>AC Repair</h3>
+                <p>Maintenance & Gas Refill</p>
+            </div>
+            <div class="service-card" onclick="setService('Fridge Repair')">
+                <div class="icon-wrapper">🧊</div>
+                <h3>Fridge Repair</h3>
+                <p>Cooling & Parts Fix</p>
+            </div>
+            <div class="service-card" onclick="setService('RO Service')">
+                <div class="icon-wrapper">💧</div>
+                <h3>RO Service</h3>
+                <p>Pure Water Solutions</p>
+            </div>
+            <div class="service-card" onclick="setService('Washing Machine Repair')">
+                <div class="icon-wrapper">🧺</div>
+                <h3>Washing Machine</h3>
+                <p>Motor & PCB Repair</p>
+            </div>
+        </div>
+
+        <div class="booking-box" id="order-form">
+            <h2 style="text-align: center; margin-bottom: 20px;">Register New Booking</h2>
+            <input type="text" id="userName" placeholder="Customer Name">
+            <input type="tel" id="userPhone" placeholder="Mobile Number">
+            <select id="userReq">
+                <option value="">Select Service Type</option>
+                <option value="AC Repair">AC Repair & Service</option>
+                <option value="Fridge Repair">Fridge Repair</option>
+                <option value="RO Service">RO Water Service</option>
+                <option value="Washing Machine Repair">Washing Machine Repair</option>
+            </select>
+            <textarea id="userAddr" rows="3" placeholder="Full Address in Manamadurai"></textarea>
+            <button class="btn-whatsapp" onclick="sendOrder()">Submit & Message via WhatsApp ✅</button>
+            <button onclick="clearStats()" style="margin-top:20px; background:none; border:none; color: #999; cursor:pointer; font-size: 12px; width: 100%;">Reset Dashboard Stats</button>
+        </div>
+    </div>
+
+    <footer>
+        © 2026 PRATHIP SARAVANA FIX PRO | Admin Dashboard v1.0
+    </footer>
+
+    <a href="tel:8248094243" class="call-btn">📞 CALL NOW</a>
+
+    <script>
+        // Initialize dashboard from local storage
+        let total = localStorage.getItem('total') || 0;
+        let open = localStorage.getItem('open') || 0;
+        let closed = localStorage.getItem('closed') || 0;
+
+        function updateDisplay() {
+            document.getElementById('totalCount').innerText = total;
+            document.getElementById('openCount').innerText = open;
+            document.getElementById('closedCount').innerText = closed;
+        }
+
+        updateDisplay();
+
+        function setService(val) {
+            document.getElementById('userReq').value = val;
+            document.getElementById('order-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function sendOrder() {
+            const name = document.getElementById('userName').value;
+            const phone = document.getElementById('userPhone').value;
+            const service = document.getElementById('userReq').value;
+            const address = document.getElementById('userAddr').value;
+
+            if(!name || !phone) {
+                alert("Please fill Name and Phone.");
+                return;
+            }
+
+            // Update Dashboard Logic
+            total++;
+            open++;
+            localStorage.setItem('total', total);
+            localStorage.setItem('open', open);
+            updateDisplay();
+
+            // Prepare WhatsApp
+            const text = `*NEW BOOKING: FIX PRO*%0A*Customer:* ${name}%0A*Phone:* ${phone}%0A*Service:* ${service}%0A*Address:* ${address}`;
+            window.open(`https://wa.me/918248094243?text=${text}`, '_blank');
+        }
+
+        function clearStats() {
+            if(confirm("Are you sure you want to reset all counts?")) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
